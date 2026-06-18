@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>كاش - منظومة إدارة الأعمال السحابية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --gold: #F5A623;
+  --gold-dark: #C47D0E;
+  --gold-light: #FFD580;
+  --bg: #0A0A0F;
+  --bg2: #111118;
+  --bg3: #1A1A24;
+  --bg4: #22222F;
+  --border: rgba(245,166,35,0.15);
+  --text: #F0EDE8;
+  --muted: #8A8799;
+  --green: #22C55E;
+  --red: #EF4444;
+  --blue: #3B82F6;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Cairo',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;width:100%;z-index:999;
+  padding:18px 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(10,10,15,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.logo{
+  font-size:1.8rem;font-weight:900;
+  background:linear-gradient(135deg,var(--gold-light),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:2px;
+}
+.logo span{font-weight:300;font-size:1rem;color:var(--muted);-webkit-text-fill-color:var(--muted);}
+.nav-links{display:flex;gap:32px;list-style:none;align-items:center;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.95rem;font-weight:500;transition:.3s;}
+.nav-links a:hover{color:var(--gold);}
+.btn-nav{
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#000!important;padding:10px 24px;border-radius:8px;
+  font-weight:700;font-size:.9rem;-webkit-text-fill-color:#000!important;
+}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:120px 5% 80px;
+  position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(245,166,35,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(59,130,246,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 30% at 80% 60%, rgba(245,166,35,0.05) 0%, transparent 50%);
+}
+.grid-overlay{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(245,166,35,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,166,35,0.04) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(245,166,35,0.1);
+  border:1px solid rgba(245,166,35,0.3);
+  color:var(--gold);padding:6px 16px;border-radius:50px;
+  font-size:.85rem;font-weight:600;margin-bottom:24px;
+  animation:fadeDown .8s ease forwards;
+}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+.hero h1{
+  font-size:clamp(2.8rem,6vw,5rem);
+  font-weight:900;line-height:1.15;
+  margin-bottom:20px;
+  animation:fadeUp 1s ease .2s both;
+}
+.hero h1 .highlight{
+  background:linear-gradient(135deg,var(--gold-light),var(--gold),#E8860A);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero p{
+  font-size:1.15rem;color:var(--muted);max-width:620px;margin:0 auto 40px;
+  line-height:1.8;animation:fadeUp 1s ease .4s both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeUp 1s ease .6s both;}
+.btn-primary{
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#000;padding:14px 32px;border-radius:10px;
+  font-weight:800;font-size:1rem;text-decoration:none;
+  transition:.3s;border:none;cursor:pointer;font-family:'Cairo',sans-serif;
+  box-shadow:0 4px 30px rgba(245,166,35,0.3);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(245,166,35,0.4);}
+.btn-outline{
+  border:1.5px solid var(--border);color:var(--text);
+  padding:14px 32px;border-radius:10px;
+  font-weight:700;font-size:1rem;text-decoration:none;
+  background:transparent;cursor:pointer;font-family:'Cairo',sans-serif;
+  transition:.3s;
+}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);background:rgba(245,166,35,0.05);}
+
+/* ─── STATS ─── */
+.stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:1px;background:var(--border);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  margin-top:80px;
+}
+.stat{
+  background:var(--bg);padding:40px 20px;text-align:center;
+}
+.stat-num{font-size:2.5rem;font-weight:900;color:var(--gold);}
+.stat-label{color:var(--muted);font-size:.9rem;margin-top:4px;}
+
+/* ─── DASHBOARD PREVIEW ─── */
+.preview-section{padding:100px 5%;position:relative;}
+.section-label{
+  color:var(--gold);font-size:.85rem;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-label::before{content:'';width:30px;height:2px;background:var(--gold);}
+.section-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;margin-bottom:16px;}
+.section-sub{color:var(--muted);font-size:1rem;line-height:1.8;max-width:500px;margin-bottom:50px;}
+
+.dashboard-frame{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(245,166,35,0.05);
+}
+.dash-topbar{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 16px;background:var(--bg3);
+  border-bottom:1px solid var(--border);
+}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot.r{background:#EF4444;} .dot.y{background:#F59E0B;} .dot.g{background:#22C55E;}
+.dash-topbar span{color:var(--muted);font-size:.8rem;margin-right:auto;}
+
+.dash-body{display:flex;min-height:480px;}
+.dash-sidebar{
+  width:200px;flex-shrink:0;
+  background:var(--bg3);border-left:1px solid var(--border);
+  padding:20px 0;
+}
+.dash-logo{
+  padding:0 20px 20px;
+  font-size:1.1rem;font-weight:900;color:var(--gold);
+  border-bottom:1px solid var(--border);margin-bottom:12px;
+}
+.dash-logo small{display:block;color:var(--muted);font-size:.7rem;font-weight:400;}
+.dash-menu-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 20px;font-size:.85rem;color:var(--muted);cursor:pointer;
+  transition:.2s;
+}
+.dash-menu-item:hover,.dash-menu-item.active{color:var(--text);background:rgba(245,166,35,0.08);}
+.dash-menu-item.active{border-right:3px solid var(--gold);}
+.dash-menu-item i{font-size:.8rem;width:16px;color:var(--gold);}
+
+.dash-main{flex:1;padding:24px;overflow:auto;}
+.dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.dash-header h2{font-size:1.1rem;font-weight:700;}
+.dash-date{color:var(--muted);font-size:.8rem;}
+.tenant-badge{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(245,166,35,0.1);border:1px solid var(--border);
+  border-radius:8px;padding:6px 12px;font-size:.8rem;
+}
+.tenant-dot{width:8px;height:8px;border-radius:50%;background:var(--green);}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.kpi{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:10px;padding:16px;
+}
+.kpi-val{font-size:1.4rem;font-weight:900;margin-bottom:2px;}
+.kpi-label{color:var(--muted);font-size:.75rem;}
+.kpi-change{font-size:.72rem;margin-top:4px;}
+.up{color:var(--green);} .down{color:var(--red);}
+
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.chart-box{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:10px;padding:16px;
+}
+.chart-title{font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:12px;}
+.bar-chart{display:flex;align-items:flex-end;gap:5px;height:70px;}
+.bar{
+  flex:1;border-radius:4px 4px 0 0;
+  background:linear-gradient(to top,var(--gold-dark),var(--gold-light));
+  opacity:.7;transition:.3s;
+}
+.bar:hover{opacity:1;}
+.mini-table{width:100%;font-size:.75rem;border-collapse:collapse;}
+.mini-table th{color:var(--muted);font-weight:600;padding:4px 0;text-align:right;}
+.mini-table td{padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.badge-pill{
+  display:inline-block;padding:2px 8px;border-radius:50px;font-size:.65rem;font-weight:700;
+}
+.pill-green{background:rgba(34,197,94,.15);color:var(--green);}
+.pill-yellow{background:rgba(245,166,35,.15);color:var(--gold);}
+.pill-red{background:rgba(239,68,68,.15);color:var(--red);}
+
+/* ─── TENANTS SECTION ─── */
+.tenants-section{
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:100px 5%;
+}
+.tenants-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:50px;}
+.tenant-card{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:12px;padding:24px;text-align:center;
+  transition:.3s;cursor:pointer;position:relative;overflow:hidden;
+}
+.tenant-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(245,166,35,0.05),transparent);
+  opacity:0;transition:.3s;
+}
+.tenant-card:hover{border-color:rgba(245,166,35,0.4);transform:translateY(-4px);}
+.tenant-card:hover::before{opacity:1;}
+.tenant-icon{
+  width:56px;height:56px;border-radius:14px;margin:0 auto 16px;
+  display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+}
+.tenant-name{font-weight:700;font-size:.95rem;margin-bottom:4px;}
+.tenant-type{color:var(--muted);font-size:.8rem;}
+.tenant-status{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:12px;font-size:.72rem;font-weight:600;
+  color:var(--green);
+}
+.status-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+/* ─── FEATURES ─── */
+.features-section{padding:100px 5%;}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:60px;}
+.feature-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:16px;padding:32px;
+  transition:.3s;position:relative;overflow:hidden;
+}
+.feature-card::after{
+  content:'';position:absolute;bottom:0;right:0;
+  width:80px;height:80px;
+  background:radial-gradient(circle,rgba(245,166,35,0.08),transparent);
+  opacity:0;transition:.3s;
+}
+.feature-card:hover{border-color:rgba(245,166,35,0.3);}
+.feature-card:hover::after{opacity:1;}
+.feature-icon{
+  width:48px;height:48px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));
+  border:1px solid rgba(245,166,35,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;margin-bottom:20px;color:var(--gold);
+}
+.feature-title{font-size:1.05rem;font-weight:700;margin-bottom:10px;}
+.feature-desc{color:var(--muted);font-size:.9rem;line-height:1.7;}
+
+/* ─── PRICING ─── */
+.pricing-section{
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  padding:100px 5%;text-align:center;
+}
+.pricing-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px;max-width:900px;margin:60px auto 0;
+}
+.plan{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:16px;padding:36px;text-align:right;
+  transition:.3s;position:relative;
+}
+.plan.popular{
+  border-color:var(--gold);
+  background:linear-gradient(135deg,rgba(245,166,35,0.06),var(--bg3));
+}
+.popular-tag{
+  position:absolute;top:-14px;right:50%;transform:translateX(50%);
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#000;padding:4px 20px;border-radius:50px;
+  font-size:.75rem;font-weight:800;white-space:nowrap;
+}
+.plan-name{font-size:.85rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;}
+.plan-price{font-size:2.8rem;font-weight:900;line-height:1;}
+.plan-price span{font-size:.9rem;font-weight:400;color:var(--muted);}
+.plan-features{list-style:none;margin:24px 0;display:flex;flex-direction:column;gap:10px;}
+.plan-features li{
+  display:flex;align-items:center;gap:10px;
+  font-size:.88rem;color:var(--muted);
+}
+.plan-features li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
+.plan-features li.no::before{content:'✕';color:var(--red);}
+.plan-features li.no{opacity:.5;}
+
+/* ─── HOW IT WORKS ─── */
+.how-section{padding:100px 5%;}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;margin-top:60px;position:relative;}
+.steps::before{
+  content:'';position:absolute;
+  top:36px;right:72px;left:72px;height:1px;
+  background:linear-gradient(to left,transparent,var(--border),var(--border),transparent);
+}
+.step{text-align:center;padding:0 16px;}
+.step-num{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#000;font-size:1.5rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;position:relative;z-index:1;
+  box-shadow:0 8px 30px rgba(245,166,35,0.3);
+}
+.step-title{font-size:1rem;font-weight:700;margin-bottom:8px;}
+.step-desc{color:var(--muted);font-size:.85rem;line-height:1.6;}
+
+/* ─── CTA ─── */
+.cta-section{
+  margin:80px 5%;
+  background:linear-gradient(135deg,rgba(245,166,35,0.1),rgba(245,166,35,0.03));
+  border:1px solid rgba(245,166,35,0.2);
+  border-radius:24px;padding:80px 5%;text-align:center;
+  position:relative;overflow:hidden;
+}
+.cta-section::before{
+  content:'';position:absolute;
+  top:-50%;right:-20%;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(245,166,35,0.08),transparent);
+}
+.cta-section h2{font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:16px;}
+.cta-section p{color:var(--muted);margin-bottom:36px;font-size:1rem;line-height:1.8;}
+
+/* ─── FOOTER ─── */
+footer{
+  border-top:1px solid var(--border);
+  padding:40px 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;
+}
+.footer-logo{font-size:1.4rem;font-weight:900;color:var(--gold);}
+.footer-links{display:flex;gap:24px;}
+.footer-links a{color:var(--muted);text-decoration:none;font-size:.85rem;transition:.3s;}
+.footer-links a:hover{color:var(--gold);}
+footer p{color:var(--muted);font-size:.8rem;}
+
+/* ─── ANIMATIONS ─── */
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+.float{animation:float 4s ease-in-out infinite;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .kpis{grid-template-columns:repeat(2,1fr);}
+  .chart-row{grid-template-columns:1fr;}
+  .dash-sidebar{width:140px;}
+  .steps::before{display:none;}
+  .dash-menu-item span{display:none;}
+  .dash-sidebar{width:50px;}
+  .dash-menu-item i{margin:auto;}
+  .dash-logo small,.dash-logo .name{display:none;}
+}
+
+/* ─── SCROLL REVEAL ─── */
+.reveal{opacity:0;transform:translateY(40px);transition:.8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">كاش <span>KASH</span></div>
+  <ul class="nav-links">
+    <li><a href="#features">المميزات</a></li>
+    <li><a href="#tenants">من يستخدمه</a></li>
+    <li><a href="#pricing">الأسعار</a></li>
+    <li><a href="#how">كيف يعمل</a></li>
+    <li><a href="#" class="btn-nav">ابدأ مجاناً</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-overlay"></div>
+  <div style="position:relative;z-index:1;width:100%">
+    <div class="badge"><i class="fas fa-bolt"></i> منظومة إدارة أعمال سحابية</div>
+    <h1>
+      سيستم واحد<br>
+      <span class="highlight">بيشغّل ألف محل</span>
+    </h1>
+    <p>
+      ماكينة SaaS متعددة المستأجرين – صيدليات، سوبر ماركت، مطاعم، وملابس.
+      كل محل يشتغل على نفس الكود بـ <strong>tenant_id</strong> منفصل، وانت جالس بتشيل الاشتراكات.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('dashboard-demo').scrollIntoView({behavior:'smooth'})">
+        <i class="fas fa-play"></i> شوف الداشبورد
+      </button>
+      <button class="btn-outline" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">
+        <i class="fas fa-tag"></i> الأسعار
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat float" style="animation-delay:.1s">
+    <div class="stat-num">+500</div>
+    <div class="stat-label">محل متصل</div>
+  </div>
+  <div class="stat float" style="animation-delay:.3s">
+    <div class="stat-num">2 GB</div>
+    <div class="stat-label">RAM فقط للسيرفر</div>
+  </div>
+  <div class="stat float" style="animation-delay:.5s">
+    <div class="stat-num">100K</div>
+    <div class="stat-label">جنيه شهرياً</div>
+  </div>
+  <div class="stat float" style="animation-delay:.7s">
+    <div class="stat-num">99.9%</div>
+    <div class="stat-label">وقت التشغيل</div>
+  </div>
+</div>
+
+<!-- DASHBOARD PREVIEW -->
+<section class="preview-section reveal" id="dashboard-demo">
+  <div class="section-label">داشبورد حي</div>
+  <h2 class="section-title">لوحة تحكم كل مستأجر منفصلة</h2>
+  <p class="section-sub">كل محل ليه داشبورد خاص بيه، بس كلهم شغالين على نفس الماكينة. الـ tenant_id هو اللي بيعزل البيانات.</p>
+
+  <div class="dashboard-frame">
+    <!-- Browser chrome -->
+    <div class="dash-topbar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <span>kash.app/dashboard/pharmacy-nour</span>
+    </div>
+
+    <div class="dash-body">
+      <!-- Sidebar -->
+      <div class="dash-sidebar">
+        <div class="dash-logo">
+          ك<span class="name">اش</span>
+          <small>صيدلية النور</small>
+        </div>
+        <div class="dash-menu-item active"><i class="fas fa-chart-pie"></i><span>الرئيسية</span></div>
+        <div class="dash-menu-item"><i class="fas fa-cash-register"></i><span>المبيعات</span></div>
+        <div class="dash-menu-item"><i class="fas fa-boxes"></i><span>المخزن</span></div>
+        <div class="dash-menu-item"><i class="fas fa-users"></i><span>العملاء</span></div>
+        <div class="dash-menu-item"><i class="fas fa-file-invoice"></i><span>الفواتير</span></div>
+        <div class="dash-menu-item"><i class="fas fa-cog"></i><span>الإعدادات</span></div>
+      </div>
+
+      <!-- Main -->
+      <div class="dash-main">
+        <div class="dash-header">
+          <div>
+            <h2>لوحة التحكم</h2>
+            <div class="dash-date">الخميس، 14 مايو 2026</div>
+          </div>
+          <div class="tenant-badge">
+            <div class="tenant-dot"></div>
+            <span>صيدلية النور</span>
+            <span style="color:var(--muted);font-size:.7rem">| ID: T-00147</span>
+          </div>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpis">
+          <div class="kpi">
+            <div class="kpi-val" style="color:var(--gold)">24,800</div>
+            <div class="kpi-label">مبيعات اليوم (جنيه)</div>
+            <div class="kpi-change up">↑ 12% عن أمس</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-val">186</div>
+            <div class="kpi-label">فاتورة اليوم</div>
+            <div class="kpi-change up">↑ 8%</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-val" style="color:var(--red)">14</div>
+            <div class="kpi-label">صنف أوشك على النفاد</div>
+            <div class="kpi-change down">تحتاج طلبية</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-val" style="color:var(--green)">98%</div>
+            <div class="kpi-label">رضا العملاء</div>
+            <div class="kpi-change up">↑ 2%</div>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="chart-row">
+          <div class="chart-box">
+            <div class="chart-title">المبيعات آخر 7 أيام</div>
+            <div class="bar-chart">
+              <div class="bar" style="height:40%;title='السبت'"></div>
+              <div class="bar" style="height:60%"></div>
+              <div class="bar" style="height:50%"></div>
+              <div class="bar" style="height:80%"></div>
+              <div class="bar" style="height:55%"></div>
+              <div class="bar" style="height:90%;opacity:1;background:linear-gradient(to top,var(--gold-dark),var(--gold))"></div>
+              <div class="bar" style="height:70%"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:.65rem;color:var(--muted)">
+              <span>السبت</span><span>الأحد</span><span>الإثنين</span><span>الثلاثاء</span><span>الأربعاء</span><span>الخميس</span><span>الجمعة</span>
+            </div>
+          </div>
+          <div class="chart-box">
+            <div class="chart-title">آخر المبيعات</div>
+            <table class="mini-table">
+              <tr><th>الصنف</th><th>الكمية</th><th>الحالة</th></tr>
+              <tr><td>باندول 500mg</td><td>12</td><td><span class="badge-pill pill-green">تم</span></td></tr>
+              <tr><td>أموكسيسيلين</td><td>6</td><td><span class="badge-pill pill-green">تم</span></td></tr>
+              <tr><td>فيتامين سي</td><td>20</td><td><span class="badge-pill pill-yellow">معلق</span></td></tr>
+              <tr><td>برونتال كريم</td><td>4</td><td><span class="badge-pill pill-green">تم</span></td></tr>
+              <tr><td>أوميبرازول</td><td>8</td><td><span class="badge-pill pill-red">مرجع</span></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TENANTS SECTION -->
+<section class="tenants-section" id="tenants">
+  <div class="section-label">المستأجرون</div>
+  <h2 class="section-title">كل الأعمال على ماكينة واحدة</h2>
+  <p class="section-sub">من الصيدلية للمطعم – نفس السيستم، بيانات معزولة 100%.</p>
+
+  <div class="tenants-grid reveal">
+    <div class="tenant-card">
+      <div class="tenant-icon" style="background:rgba(34,197,94,0.1)">💊</div>
+      <div class="tenant-name">صيدلية النور</div>
+      <div class="tenant-type">فيصل - أدوية وتجميل</div>
+      <div class="tenant-status"><div class="status-dot"></div> نشط</div>
+    </div>
+    <div class="tenant-card">
+      <div class="tenant-icon" style="background:rgba(59,130,246,0.1)">🛒</div>
+      <div class="tenant-name">سوبر محمود</div>
+      <div class="tenant-type">سوبر ماركت - فيصل</div>
+      <div class="tenant-status"><div class="status-dot"></div> نشط</div>
+    </div>
+    <div class="tenant-card">
+      <div class="tenant-icon" style="background:rgba(245,166,35,0.1)">🍕</div>
+      <div class="tenant-name">مطعم البيك</div>
+      <div class="tenant-type">مطعم وكافتيريا</div>
+      <div class="tenant-status"><div class="status-dot"></div> نشط</div>
+    </div>
+    <div class="tenant-card">
+      <div class="tenant-icon" style="background:rgba(168,85,247,0.1)">👗</div>
+      <div class="tenant-name">محل سلمى</div>
+      <div class="tenant-type">ملابس وإكسسوار</div>
+      <div class="tenant-status"><div class="status-dot"></div> نشط</div>
+    </div>
+    <div class="tenant-card">
+      <div class="tenant-icon" style="background:rgba(239,68,68,0.1)">🔧</div>
+      <div class="tenant-name">ورشة أحمد</div>
+      <div class="tenant-type">كهرباء وسباكة</div>
+      <div class="tenant-status"><div class="status-dot"></div> نشط</div>
+    </div>
+    <div class="tenant-card" style="border-style:dashed;opacity:.5;cursor:default">
+      <div class="tenant-icon" style="background:rgba(255,255,255,0.03)">+</div>
+      <div class="tenant-name">محلك هنا</div>
+      <div class="tenant-type">سجّل الآن</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section reveal" id="features">
+  <div class="section-label">المميزات</div>
+  <h2 class="section-title">كل حاجة في ماكينة واحدة</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-building"></i></div>
+      <div class="feature-title">Multitenancy حقيقي</div>
+      <div class="feature-desc">كل عميل ليه tenant_id معزول. البيانات محمية 100% – الصيدلية مش هتشوف بيانات السوبر ماركت أبداً.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+      <div class="feature-title">فاتورة إلكترونية</div>
+      <div class="feature-desc">متوافق مع متطلبات هيئة الزكاة والضرائب. لما القانون يتغير، بتعدّل سطر واحد والـ 500 محل بيتحدثوا في ثانية.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-boxes"></i></div>
+      <div class="feature-title">إدارة مخزن ذكية</div>
+      <div class="feature-desc">تنبيهات تلقائية لما الصنف يوصل للحد الأدنى. تقارير الحركة والمبيعات بضغطة واحدة.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-cash-register"></i></div>
+      <div class="feature-title">كاشير سريع</div>
+      <div class="feature-desc">واجهة كاشير بسيطة وسريعة للغاية. بالكيبورد أو تاتش سكرين. مع دعم الباركود والفاتورة الفورية.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+      <div class="feature-title">تقارير وتحليلات</div>
+      <div class="feature-desc">داشبورد حي بيتحدث كل دقيقة. أرباح يومية، أسبوعية، شهرية. مقارنة بالفترات السابقة.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-cloud"></i></div>
+      <div class="feature-title">سحابي 100%</div>
+      <div class="feature-desc">مفيش تسطيب أو صيانة. الداتا محفوظة في السحابة. شغّال من أي جهاز أو موبايل.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="section-label" style="justify-content:center">آلية العمل</div>
+  <h2 class="section-title" style="text-align:center">إزاي بتشتغل الماكينة؟</h2>
+  <div class="steps reveal">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-title">سجّل محلك</div>
+      <div class="step-desc">بالاسم والنشاط وبيانات المسؤول. بياخد دقيقتين.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-title">ادخل منتجاتك</div>
+      <div class="step-desc">أدخل الأصناف أو استورد من Excel بضغطة واحدة.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-title">ابدأ البيع</div>
+      <div class="step-desc">واجهة كاشير جاهزة فوراً من أي جهاز.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-title">تابع الأرباح</div>
+      <div class="step-desc">تقارير حية وتنبيهات ذكية على موبايلك.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section reveal" id="pricing">
+  <div class="section-label" style="justify-content:center">الأسعار</div>
+  <h2 class="section-title">بسيط وشفاف</h2>
+  <p style="color:var(--muted)">ابدأ مجاناً، اترقى لما ينمو مشروعك</p>
+
+  <div class="pricing-grid">
+    <!-- Starter -->
+    <div class="plan">
+      <div class="plan-name">مجاني</div>
+      <div class="plan-price">0 <span>جنيه/شهر</span></div>
+      <ul class="plan-features">
+        <li>كاشير واحد</li>
+        <li>حتى 200 صنف</li>
+        <li>تقارير أسبوعية</li>
+        <li class="no">فاتورة إلكترونية</li>
+        <li class="no">تطبيق موبايل</li>
+      </ul>
+      <button class="btn-outline" style="width:100%">ابدأ مجاناً</button>
+    </div>
+
+    <!-- Pro -->
+    <div class="plan popular">
+      <div class="popular-tag">⚡ الأكثر طلباً</div>
+      <div class="plan-name">احترافي</div>
+      <div class="plan-price">200 <span>جنيه/شهر</span></div>
+      <ul class="plan-features">
+        <li>3 كاشير</li>
+        <li>أصناف غير محدودة</li>
+        <li>تقارير يومية حية</li>
+        <li>فاتورة إلكترونية</li>
+        <li>دعم فني 24/7</li>
+      </ul>
+      <button class="btn-primary" style="width:100%;font-family:'Cairo',sans-serif;border:none">اشترك الآن</button>
+    </div>
+
+    <!-- Enterprise -->
+    <div class="plan">
+      <div class="plan-name">مؤسسي</div>
+      <div class="plan-price">500 <span>جنيه/شهر</span></div>
+      <ul class="plan-features">
+        <li>كاشير غير محدود</li>
+        <li>فروع متعددة</li>
+        <li>API مخصص</li>
+        <li>تقارير متقدمة</li>
+        <li>تطبيق موبايل مخصص</li>
+      </ul>
+      <button class="btn-outline" style="width:100%">تواصل معنا</button>
+    </div>
+  </div>
+
+  <!-- Revenue calculator -->
+  <div style="margin-top:60px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:600px;margin-inline:auto;margin-top:60px;text-align:right;" class="reveal">
+    <div class="section-label">حاسبة الدخل</div>
+    <h3 style="font-size:1.2rem;margin-bottom:20px">لو عندك كذا محل مشترك...</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div>
+        <label style="color:var(--muted);font-size:.85rem;display:block;margin-bottom:6px">عدد المحلات</label>
+        <input type="range" id="tenantSlider" min="10" max="1000" value="100" step="10" style="width:100%;accent-color:var(--gold)" oninput="calcRevenue()">
+        <div id="tenantCount" style="color:var(--gold);font-weight:700;font-size:1.2rem;margin-top:4px">100 محل</div>
+      </div>
+      <div>
+        <label style="color:var(--muted);font-size:.85rem;display:block;margin-bottom:6px">سعر الاشتراك</label>
+        <select id="planPrice" style="width:100%;background:var(--bg4);border:1px solid var(--border);color:var(--text);padding:8px;border-radius:8px;font-family:'Cairo',sans-serif" onchange="calcRevenue()">
+          <option value="0">مجاني (0 ج)</option>
+          <option value="200" selected>احترافي (200 ج)</option>
+          <option value="500">مؤسسي (500 ج)</option>
+        </select>
+        <div style="color:var(--muted);font-size:.75rem;margin-top:8px">السيرفر: ~10$ شهرياً</div>
+      </div>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(245,166,35,0.1),rgba(245,166,35,0.03));border:1px solid rgba(245,166,35,0.2);border-radius:12px;padding:20px;text-align:center">
+      <div style="color:var(--muted);font-size:.85rem">دخلك الشهري الصافي</div>
+      <div id="revenue" style="font-size:2.5rem;font-weight:900;color:var(--gold)">20,000 جنيه</div>
+      <div style="color:var(--muted);font-size:.8rem">= <span id="revUSD">400</span> دولار/شهر</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section reveal">
+  <h2>ابني ماكينتك النهارده</h2>
+  <p>واحد يعمل الكود. مية بيدفعوا. السيرفر بـ 10 دولار. الباقي كله ربح.</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+    <button class="btn-primary">ابدأ تجربة مجانية</button>
+    <button class="btn-outline">شوف عرض تجريبي</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">كاش KASH</div>
+  <div class="footer-links">
+    <a href="#">الخصوصية</a>
+    <a href="#">الشروط</a>
+    <a href="#">تواصل معنا</a>
+    <a href="#">API Docs</a>
+  </div>
+  <p>© 2026 كاش. جميع الحقوق محفوظة.</p>
+</footer>
+
+<script>
+// Revenue calculator
+function calcRevenue(){
+  const tenants = parseInt(document.getElementById('tenantSlider').value);
+  const price = parseInt(document.getElementById('planPrice').value);
+  const monthly = tenants * price;
+  const serverCost = Math.ceil(tenants/500)*10*50; // 10$ ≈ 500 EGP
+  const net = monthly - serverCost;
+  document.getElementById('tenantCount').textContent = tenants + ' محل';
+  document.getElementById('revenue').textContent = net.toLocaleString('ar-EG') + ' جنيه';
+  document.getElementById('revUSD').textContent = Math.round(net/50);
+}
+calcRevenue();
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// Animate bars on hover
+document.querySelectorAll('.bar').forEach(b=>{
+  b.addEventListener('mouseenter',()=>{
+    b.style.transform='scaleY(1.05)';
+    b.style.transformOrigin='bottom';
+  });
+  b.addEventListener('mouseleave',()=>{b.style.transform='';});
+});
+</script>
+</body>
+</html>
