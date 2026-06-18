@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>كاش — الكاشير</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js" defer></script>
+<style>
+:root{
+  --gold:#F5A623;--gold-d:#C47D0E;
+  --bg:#0A0A0F;--bg2:#111118;--bg3:#1A1A24;--bg4:#22222F;
+  --border:rgba(245,166,35,.15);--text:#F0EDE8;--muted:#8A8799;
+  --green:#22C55E;--red:#EF4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);height:100dvh;overflow:hidden;display:flex;flex-direction:column;}
+button{font-family:'Cairo',sans-serif;cursor:pointer;}
+
+/* ── TOPBAR ── */
+.topbar{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.topbar-logo{font-size:1.1rem;font-weight:900;color:var(--gold);}
+.search-wrap{flex:1;display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:0 12px;}
+.search-wrap i{color:var(--muted);font-size:.85rem;}
+.search-wrap input{flex:1;background:none;border:none;color:var(--text);padding:9px 4px;font-family:'Cairo',sans-serif;font-size:.9rem;outline:none;min-width:0;}
+
+/* ── LAYOUT ── */
+.pos-body{display:flex;flex:1;overflow:hidden;}
+
+/* ── PRODUCTS PANEL ── */
+.products-panel{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;}
+.cats{display:flex;gap:6px;margin-bottom:4px;flex-wrap:wrap;}
+.cat-btn{padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--muted);font-family:'Cairo',sans-serif;font-size:.78rem;transition:.2s;}
+.cat-btn.active{background:rgba(245,166,35,.15);border-color:var(--gold);color:var(--gold);}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;}
+.prod-card{
+  background:var(--bg3);border:1px solid var(--border);border-radius:12px;
+  padding:14px 12px;cursor:pointer;transition:.15s;user-select:none;
+  display:flex;flex-direction:column;gap:6px;
+}
+.prod-card:active{transform:scale(.96);background:rgba(245,166,35,.08);}
+.prod-card.out{opacity:.4;pointer-events:none;}
+.prod-name{font-size:.85rem;font-weight:700;line-height:1.3;}
+.prod-price{font-size:1rem;font-weight:900;color:var(--gold);}
+.prod-stock{font-size:.72rem;color:var(--muted);}
+.prod-stock.low{color:var(--red);}
+.no-results{text-align:center;color:var(--muted);padding:40px;font-size:.9rem;}
+
+/* ── CART PANEL ── */
+.cart-panel{
+  width:300px;flex-shrink:0;background:var(--bg2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+}
+.cart-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.cart-title{font-size:.95rem;font-weight:700;}
+.cart-count{background:var(--gold);color:#000;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;}
+.cart-items{flex:1;overflow-y:auto;padding:10px;}
+.cart-item{
+  background:var(--bg3);border-radius:10px;padding:10px 12px;margin-bottom:6px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.cart-item-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.cart-item-name{font-size:.83rem;font-weight:700;flex:1;line-height:1.3;}
+.remove-btn{background:rgba(239,68,68,.15);border:none;color:var(--red);border-radius:6px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;}
+.cart-item-bot{display:flex;align-items:center;justify-content:space-between;}
+.qty-ctrl{display:flex;align-items:center;gap:6px;}
+.qty-btn{width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-size:.9rem;display:flex;align-items:center;justify-content:center;}
+.qty-btn:active{background:rgba(245,166,35,.15);}
+.qty-val{min-width:28px;text-align:center;font-weight:800;font-size:.9rem;}
+.item-total{font-weight:800;color:var(--gold);font-size:.9rem;}
+.empty-cart{text-align:center;color:var(--muted);padding:40px 20px;font-size:.85rem;}
+.empty-cart i{font-size:2rem;margin-bottom:10px;display:block;opacity:.3;}
+
+/* ── TOTALS ── */
+.cart-totals{padding:12px 16px;border-top:1px solid var(--border);}
+.total-row{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:4px;color:var(--muted);}
+.total-row.main{color:var(--text);font-size:1.1rem;font-weight:900;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+.discount-row{display:flex;gap:6px;margin-bottom:8px;}
+.discount-row input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.85rem;outline:none;}
+.discount-row input:focus{border-color:var(--gold);}
+
+/* ── CHECKOUT ── */
+.checkout-section{padding:12px 16px;border-top:1px solid var(--border);}
+.payment-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;}
+.pay-btn{padding:8px 4px;border-radius:8px;border:1px solid var(--border);background:none;color:var(--muted);font-family:'Cairo',sans-serif;font-size:.78rem;transition:.2s;text-align:center;}
+.pay-btn.selected{background:rgba(245,166,35,.12);border-color:var(--gold);color:var(--gold);font-weight:700;}
+.checkout-btn{
+  width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-d));
+  color:#000;border:none;padding:14px;border-radius:12px;
+  font-weight:900;font-size:1rem;transition:.2s;
+}
+.checkout-btn:active{transform:scale(.97);}
+.checkout-btn:disabled{opacity:.4;}
+
+/* ── RECEIPT MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;display:flex;align-items:flex-end;justify-content:center;}
+.receipt-sheet{
+  background:var(--bg2);border-radius:20px 20px 0 0;
+  width:100%;max-width:420px;padding:24px;
+  animation:slideUp .3s ease;
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.receipt-head{text-align:center;border-bottom:1px dashed var(--border);padding-bottom:16px;margin-bottom:16px;}
+.receipt-logo{font-size:1.5rem;font-weight:900;color:var(--gold);}
+.receipt-no{color:var(--muted);font-size:.8rem;margin-top:4px;}
+.receipt-row{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:8px;}
+.receipt-row.big{font-size:1rem;font-weight:800;color:var(--gold);border-top:1px dashed var(--border);padding-top:8px;margin-top:4px;}
+.receipt-items{margin-bottom:12px;}
+.r-item{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);margin-bottom:4px;}
+.change-badge{
+  background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);
+  color:var(--green);border-radius:10px;padding:10px 16px;
+  text-align:center;font-weight:700;margin-bottom:16px;
+}
+.receipt-btns{display:flex;gap:10px;}
+.btn-full{flex:1;padding:13px;border-radius:10px;font-family:'Cairo',sans-serif;font-weight:700;font-size:.9rem;border:none;cursor:pointer;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:#000;}
+.btn-grey{background:var(--bg3);color:var(--text);border:1px solid var(--border);}
+
+/* ── NUMPAD (paid amount) ── */
+.paid-row{display:flex;gap:6px;margin-bottom:10px;align-items:center;}
+.paid-row label{color:var(--muted);font-size:.82rem;white-space:nowrap;}
+.paid-row input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.95rem;outline:none;text-align:center;font-weight:800;}
+.paid-row input:focus{border-color:var(--gold);}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:10px;font-size:.85rem;z-index:200;animation:fadeIn .3s;display:flex;align-items:center;gap:8px;}
+.toast.ok{border-color:rgba(34,197,94,.3);color:var(--green);}
+.toast.err{border-color:rgba(239,68,68,.3);color:var(--red);}
+@keyframes fadeIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+
+@media(max-width:640px){
+  .cart-panel{position:fixed;bottom:0;left:0;right:0;width:100%;height:55dvh;border-right:none;border-top:1px solid var(--border);}
+  .products-panel{padding-bottom:calc(55dvh + 8px);}
+  .prod-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));}
+}
+</style>
+</head>
+<body x-data="pos()" x-init="init()">
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">كاش ⚡</div>
+  <div class="search-wrap">
+    <i class="fas fa-search"></i>
+    <input id="searchInput" x-model="search" placeholder="ابحث أو اكتب الباركود..." @keydown.enter="addTopResult()">
+  </div>
+  <div style="color:var(--muted);font-size:.78rem;white-space:nowrap" x-text="tenantName"></div>
+</div>
+
+<!-- BODY -->
+<div class="pos-body">
+
+  <!-- PRODUCTS -->
+  <div class="products-panel">
+    <div class="cats">
+      <button class="cat-btn" :class="activecat===''&&'active'" @click="activecat='';filterProds()">الكل</button>
+      <template x-for="c in cats" :key="c">
+        <button class="cat-btn" :class="activecat===c&&'active'" @click="activecat=c;filterProds()" x-text="c"></button>
+      </template>
+    </div>
+    <div class="prod-grid">
+      <template x-for="p in filtered" :key="p.id">
+        <div class="prod-card" :class="p.stock<=0&&'out'" @click="addToCart(p)">
+          <div class="prod-name" x-text="p.name"></div>
+          <div class="prod-price" x-text="fmt(p.price)+' ج'"></div>
+          <div class="prod-stock" :class="p.stock<=p.min_stock&&'low'" x-text="'متاح: '+p.stock+' '+p.unit"></div>
+        </div>
+      </template>
+      <div class="no-results" x-show="!filtered.length" style="grid-column:1/-1">
+        <i class="fas fa-search" style="font-size:2rem;opacity:.2;display:block;margin-bottom:8px"></i>
+        لا توجد نتائج
+      </div>
+    </div>
+  </div>
+
+  <!-- CART -->
+  <div class="cart-panel">
+    <div class="cart-header">
+      <div class="cart-title">الفاتورة</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="cart-count" x-text="cart.length"></div>
+        <button @click="clearCart()" style="background:none;border:none;color:var(--muted);font-size:.85rem" x-show="cart.length">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="cart-items">
+      <template x-if="!cart.length">
+        <div class="empty-cart">
+          <i class="fas fa-shopping-cart"></i>
+          ابدأ بإضافة أصناف
+        </div>
+      </template>
+      <template x-for="(item,i) in cart" :key="item.product_id">
+        <div class="cart-item">
+          <div class="cart-item-top">
+            <div class="cart-item-name" x-text="item.name"></div>
+            <button class="remove-btn" @click="remove(i)"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="cart-item-bot">
+            <div class="qty-ctrl">
+              <button class="qty-btn" @click="changeQty(i,-1)">−</button>
+              <div class="qty-val" x-text="item.qty"></div>
+              <button class="qty-btn" @click="changeQty(i,1)">+</button>
+            </div>
+            <div class="item-total" x-text="fmt(item.price*item.qty)+' ج'"></div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <!-- TOTALS -->
+    <div class="cart-totals">
+      <div class="total-row"><span>الإجمالي</span><span x-text="fmt(subtotal)+' ج'"></span></div>
+      <div class="discount-row">
+        <input type="number" x-model="discount" placeholder="خصم" min="0">
+      </div>
+      <div class="total-row" x-show="discount>0"><span>الخصم</span><span style="color:var(--red)" x-text="'− '+fmt(discount)+' ج'"></span></div>
+      <div class="total-row main"><span>الصافي</span><span x-text="fmt(total)+' ج'"></span></div>
+    </div>
+
+    <!-- CHECKOUT -->
+    <div class="checkout-section">
+      <div class="payment-btns">
+        <button class="pay-btn" :class="payment==='cash'&&'selected'" @click="payment='cash'">💵 كاش</button>
+        <button class="pay-btn" :class="payment==='card'&&'selected'" @click="payment='card'">💳 كارت</button>
+        <button class="pay-btn" :class="payment==='transfer'&&'selected'" @click="payment='transfer'">📱 تحويل</button>
+      </div>
+      <div class="paid-row" x-show="payment==='cash'">
+        <label>المدفوع</label>
+        <input type="number" x-model="paid" :placeholder="total">
+      </div>
+      <button class="checkout-btn" @click="checkout()" :disabled="!cart.length || checkoutLoading">
+        <span x-show="!checkoutLoading">
+          إتمام البيع
+          <span x-show="payment==='cash' && paid && paid>=total"> | الباقي: <span x-text="fmt(paid-total)"></span> ج</span>
+        </span>
+        <span x-show="checkoutLoading">⏳ جاري...</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- RECEIPT -->
+<div class="overlay" x-show="receipt" x-cloak @click.self="receipt=null">
+  <div class="receipt-sheet" x-show="receipt">
+    <div class="receipt-head">
+      <div class="receipt-logo">كاش</div>
+      <div x-text="tenantName" style="font-weight:600;font-size:.9rem;margin-top:4px"></div>
+      <div class="receipt-no" x-text="receipt?.invoice_no"></div>
+      <div class="receipt-no" x-text="receipt && new Date(receipt.created_at*1000).toLocaleString('ar-EG')"></div>
+    </div>
+
+    <div class="receipt-items">
+      <template x-for="i in (receipt?.items||[])" :key="i.id">
+        <div class="r-item">
+          <span x-text="i.name+' × '+i.qty"></span>
+          <span x-text="fmt(i.total)+' ج'"></span>
+        </div>
+      </template>
+    </div>
+
+    <div class="receipt-row" x-show="receipt?.discount>0"><span>خصم</span><span style="color:var(--red)" x-text="'− '+fmt(receipt?.discount)+' ج'"></span></div>
+    <div class="receipt-row big"><span>الإجمالي</span><span x-text="fmt(receipt?.total)+' ج'"></span></div>
+    <div class="receipt-row" style="color:var(--muted)"><span>طريقة الدفع</span><span x-text="receipt?.payment==='cash'?'كاش':receipt?.payment==='card'?'كارت':'تحويل'"></span></div>
+
+    <div class="change-badge" x-show="receipt?.change>0">
+      الباقي: <span x-text="fmt(receipt?.change)"></span> جنيه
+    </div>
+
+    <div class="receipt-btns">
+      <button class="btn-full btn-grey" @click="receipt=null">إغلاق</button>
+      <button class="btn-full btn-gold" @click="printReceipt()">🖨 طباعة</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" x-show="toastMsg" :class="toastType" x-text="toastMsg"></div>
+
+<style>[x-cloak]{display:none!important}</style>
+<script>
+const API = window.location.origin + '/api';
+
+function pos(){
+  return {
+    token: localStorage.getItem('kash_token') || new URLSearchParams(location.search).get('token'),
+    tenantName: JSON.parse(localStorage.getItem('kash_tenant')||'{}')?.name || 'كاش',
+    allProducts: [],
+    filtered: [],
+    cats: [],
+    activecat: '',
+    search: '',
+    cart: [],
+    discount: '',
+    payment: 'cash',
+    paid: '',
+    receipt: null,
+    checkoutLoading: false,
+    toastMsg: '', toastType: '',
+
+    get subtotal(){ return this.cart.reduce((s,i)=>s+(i.price*i.qty),0); },
+    get total(){ return Math.max(0, +(this.subtotal - (this.discount||0)).toFixed(2)); },
+
+    async init(){
+      document.getElementById('searchInput').focus();
+      await this.loadProducts();
+      this.$watch('search', ()=>this.filterProds());
+    },
+
+    async loadProducts(){
+      const r = await fetch(API+'/products', {headers:{Authorization:'Bearer '+this.token}});
+      const d = await r.json();
+      if(!d.ok) return;
+      this.allProducts = d.products;
+      this.cats = [...new Set(d.products.map(p=>p.category).filter(Boolean))];
+      this.filtered = d.products;
+    },
+
+    filterProds(){
+      let list = this.allProducts;
+      if(this.activecat) list = list.filter(p=>p.category===this.activecat);
+      if(this.search){
+        const q = this.search.toLowerCase();
+        list = list.filter(p=>p.name.toLowerCase().includes(q)||p.barcode?.includes(q));
+      }
+      this.filtered = list;
+    },
+
+    addTopResult(){
+      if(this.filtered.length===1) this.addToCart(this.filtered[0]);
+    },
+
+    addToCart(p){
+      const existing = this.cart.find(i=>i.product_id===p.id);
+      if(existing){
+        if(existing.qty>=p.stock){ this.toast('وصلت لأقصى كمية متاحة','err'); return; }
+        existing.qty++;
+      } else {
+        if(p.stock<=0){ this.toast('الصنف نفد من المخزون','err'); return; }
+        this.cart.push({product_id:p.id,name:p.name,qty:1,price:p.price,stock:p.stock});
+      }
+      this.search='';
+      this.filterProds();
+    },
+
+    changeQty(i, delta){
+      const item = this.cart[i];
+      const newQty = item.qty + delta;
+      if(newQty<=0){ this.remove(i); return; }
+      if(newQty>item.stock){ this.toast('لا يوجد مخزون كافٍ','err'); return; }
+      item.qty = newQty;
+    },
+
+    remove(i){ this.cart.splice(i,1); },
+    clearCart(){ if(confirm('مسح الفاتورة؟')) this.cart=[]; this.discount=''; this.paid=''; },
+
+    async checkout(){
+      if(!this.cart.length) return;
+      if(this.payment==='cash' && this.paid && this.paid<this.total){
+        this.toast('المبلغ المدفوع أقل من الإجمالي','err'); return;
+      }
+      this.checkoutLoading=true;
+      const body = {
+        items: this.cart.map(i=>({product_id:i.product_id, qty:i.qty, price:i.price})),
+        payment: this.payment,
+        discount: +(this.discount||0),
+        paid: +(this.paid||this.total)
+      };
+      const r = await fetch(API+'/sales',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+this.token},
+        body: JSON.stringify(body)
+      });
+      const d = await r.json();
+      this.checkoutLoading=false;
+      if(!d.ok){ this.toast(d.error,'err'); return; }
+      this.receipt = d.sale;
+      this.cart=[];
+      this.discount='';
+      this.paid='';
+      this.loadProducts();
+    },
+
+    printReceipt(){
+      const w = window.open('','_blank','width=320,height=600');
+      w.document.write(`<html dir="rtl"><head><meta charset="UTF-8"><style>
+        body{font-family:sans-serif;padding:16px;font-size:13px;}
+        h2{text-align:center;margin-bottom:4px;} .center{text-align:center;color:#666;font-size:11px;}
+        table{width:100%;border-collapse:collapse;margin:10px 0;}
+        td{padding:4px 2px;} .total{font-size:16px;font-weight:bold;border-top:1px dashed #ccc;padding-top:8px;}
+        .change{background:#e8f5e9;padding:8px;border-radius:6px;text-align:center;margin:8px 0;}
+      </style></head><body>
+        <h2>كاش</h2>
+        <div class="center">${this.tenantName}</div>
+        <div class="center">${this.receipt.invoice_no} | ${new Date(this.receipt.created_at*1000).toLocaleString('ar-EG')}</div>
+        <table>${this.receipt.items.map(i=>`<tr><td>${i.name} × ${i.qty}</td><td align="left">${i.total} ج</td></tr>`).join('')}</table>
+        ${this.receipt.discount?`<div>خصم: ${this.receipt.discount} ج</div>`:''}
+        <div class="total">الإجمالي: ${this.receipt.total} ج</div>
+        ${this.receipt.change>0?`<div class="change">الباقي: ${this.receipt.change} ج</div>`:''}
+        <div class="center" style="margin-top:12px">شكراً لزيارتكم</div>
+      </body></html>`);
+      w.print();
+    },
+
+    toast(msg, type='ok'){
+      this.toastMsg=msg; this.toastType=type;
+      setTimeout(()=>this.toastMsg='',2500);
+    },
+    fmt(n){ return Number(n||0).toLocaleString('ar-EG'); }
+  }
+}
+</script>
+</body>
+</html>
